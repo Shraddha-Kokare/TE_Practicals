@@ -1,0 +1,1046 @@
+create table emp(empId int primary key,name varchar(10) not null,empDeptId varchar(5),empSalary int,empAge int);
+
+insert into emp values(1,"Shraddha","A1",2000,20);
+insert into emp values(2,"Sam","A1",1000,20);
+insert into emp values(3,"Lily","A1",4000,22);
+insert into emp values(4,"Pakshi","A1",2000,20);
+
+select * from emp;
+
+select distinct empId from emp
+
+select name,empSalary from emp ORDER BY empSalary DESC;
+
+==========================================================================================================
+
+create table Dept ( Dept_id int primary key, Dept_name varchar(15) NOT NULL,Dept_location varchar(15))
+
+create table Employee( Emp_id int primary key, Dept_id int, Emp_fname varchar(15), Emp_lname varchar(15), Emp_Position varchar(10),Emp_salary int,Emp_JoinDate date CONSTRAINT FOREIGN KEY(Dept_id) REFERENCES Dept(Dept_id) ON DELETE CASCADE)
+
+CREATE TABLE Employee (Emp_id INT PRIMARY KEY,Dept_id INT,Emp_fname VARCHAR(15),Emp_lname VARCHAR(15),Emp_Position VARCHAR(10),Emp_salary INT,Emp_JoinDate DATE,CONSTRAINT fk_dept FOREIGN KEY (Dept_id) REFERENCES Dept(Dept_id) ON DELETE CASCADE);
+
+
+
+create table Project( Proj_id int primary key,Dept_id int NOT NULL,Proj_Name varchar(20),Proj_Location varchar(15),Proj_cost int,Proj_year int, CONSTRAINT fk_dept_proj FOREIGN KEY(Dept_id) REFERENCES Dept(Dept_id) ON DELETE CASCADE)
+
+
+insert into Employee values(1001,101,"Samir","Vadake","Supervisor",5000,'2005-1-5')
+insert into Employee values(1002,106,"Kiran","Date","Developer",5000,'2005-3-15')
+insert into Employee values(1003,101,"Rani","Macron","Tester",5000,'1997-1-5')
+insert into Employee values(1004,109,"Emmanuel","Saste","Supervisor",5000,'1995-1-5')
+insert into Employee values(1005,103,"Chetan","Kakade","Supervisor",5000,'1997-1-5')
+insert into Employee values(111,112,"Rose","Pandey","Developer",8000,'1998-1-7')
+
+
+INSERT INTO Employee VALUES(1006, 101, 'Pankaj', 'Sharma', 'Manager', 50000, '1980-06-12'),(1007, 105, 'Ratan', 'Roy', 'Team Lead', 60000, '1980-06-12'),(1008, 103, 'Ramesh', 'Khanna', 'Manager', 50000, '1980-06-12'),(1009, 104, 'Smita', 'Arora', 'Developer', 40000, '1979-06-12'),(1010, 102, 'Kashmira', 'Shaikh', 'Developer', 35000, '1981-08-12')
+
+INSERT INTO Employee VALUES(1013, 101, 'Varun', 'Sharma', 'Developer', 50000, '1980-06-12'),(1014, 101, 'Varun', 'Shaikh', 'Developer', 50000, '1980-06-12'),(1015, 101, 'Smita', 'Shah', 'Developer', 50000, '1980-06-12'),(1016, 101, 'Sunita', 'Kokare', 'Developer', 50000, '1980-06-12'),(1017, 101, 'Ujjwala', 'Patil', 'Developer', 50000, '1980-06-12'),(1018, 101, 'Sneha', 'Arora', 'Developer', 50000, '1980-06-12'),(1019, 101, 'Sham', 'Singh', 'Developer', 50000, '1980-06-12');
+insert into Employee values(1021,106,"Rosy","Malhan","Developer",55000,'1998-1-7')
+
+
+insert into Dept VALUES(106,"Comp","A1")
+insert into Dept VALUES(109,"ECE","A4")
+insert into Dept VALUES(101,"AIDS","A1")
+insert into Dept VALUES(102,"IT","A3")
+insert into Dept VALUFinTrackES(103,"ENTC","A3")
+insert into Dept VALUES(104,"Mech","A5")
+insert into Dept VALUES(105,"Civil","A1")
+
+insert into Dept VALUES(101,"AIDS","A1"),(102,"IT","A3"),(103,"ENTC","A3"),(104,"Mech","A5"),(105,"Civil","A1")
+
+
+insert into Project VALUES(1,102,"CyberSecure","A1",30000,1998)
+insert into Project VALUES(2,106,"ERP","A4",20000,2005)
+insert into Project VALUES(3,101,"FinTrack","A3",50000,2007)
+insert into Project VALUES(4,103,"MIS","A3",50000,2008)
+insert into Project VALUES(5,104,"AIGuard","A1",40000,2005)
+insert into Project VALUES(6,102,"SmartTrack","A5",25000,2004)
+insert into Project VALUES(7,102,"SmartTech","Hyderabad",2000,2004)
+insert into Project VALUES(8,102,"SmartSolutions","Mumbai",5000,2020)
+insert into Project VALUES(9,106,"WorqHat","Pune",5000,2020),(10,103,"Icube","Hyderabad",5000,2020)
+
+
+insert into Project VALUES(1,102,"CyberSecure","A1",30000,1998),(2,106,"ERP","A4",20000,2005),(3,101,"FinTrack","A3",50000,2007),(4,103,"MIS","A3",50000,2008),(5,104,"AIGuard","A1",40000,2005),(6,102,"SmartTrack","A5",25000,2004)
+
+UPDATE table Project Set Proj_year=2015 WHERE Proj_id=8;
+
+SELECT * from Employee JOIN Dept ON Employee.Dept_id=Dept.Dept_id WHERE Dept.Dept_name IN ("Comp","IT") AND Employee.Emp_fname LIKE 'P%' OR Employee.Emp_fname LIKE 'H%'
+
+SELECT DISTINCT COUNT(Emp_Position) from Employee;
+
+UPDATE Employee set Emp_salary=Emp_salary*1.1 WHERE YEAR(Emp_JoinDate)<1985
+
+
+
+create index index_name on Employee(Emp_fname) 
+
+
+
+
+
+
+
+Find the emp_fname,Emp_position,location,Emp_JoinDate who have same Dept id
+SELECT Employee.emp_fname,Employee.Emp_position,Dept.Dept_location FROM Employee INNER JOIN Dept ON Employee.Dept_id=Dept.Dept_id GROUP BY Dept_id;
+
+Find the Employee details ,Proj_id,Project cost who does not have Project location as
+‘Hyderabad’.
+
+SELECT Employee.Emp_id,Employee.Emp_fname,Project.Proj_id,Project.Proj_cost FROM Employee INNER JOIN Project ON Employee.Dept_id=Project.Dept_id WHERE Proj_Location!='Hyderabad';
+
+
+Find Department Name ,employee name, Emp_position for which project year is 2020
+
+SELECT E.Emp_id,concat(E.Emp_fname," ",E.Emp_lname) as Name,D.Dept_name,E.Emp_Position from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id WHERE P.Proj_year=2020;
+
+
+Display emp_position,D_name who have Project cost >30000
+SELECT * from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id;
+SELECT E.Emp_Position,D.D_name from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id WHERE P.Proj_cost>30000;
+
+Find the names of all the Projects that started in the year 2015
+SELECT Project.Proj_Name from Project WHERE Proj_year=2015;
+
+List the Dept_name having no_of_emp=10
+SELECT * FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id GROUP BY D.Dept_id;
+SELECT D.Dept_id,D.Dept_name,count(*) FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id GROUP BY D.Dept_id Having count(*)>3;
+
+
+Display the total number of employee who have joined any project before 2009
+SELECT * FROM Employee WHERE Emp_JoinDate<'2009-01-01';
+SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id GROUP BY P.Proj_id;
+SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009 GROUP BY P.Proj_id;
+SELECT P.Proj_Name,COUNT(P.Proj_id) FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009 GROUP BY P.Proj_id;
+
+Create a view showing the employee and Department details.
+CREATE VIEW V4 AS SELECT Employee.Emp_id,concat(Employee.Emp_fname,' ',Employee.Emp_lname),Dept.Dept_id,Dept.Dept_name FROM Employee,Dept WHERE Employee.Dept_id=Dept.Dept_id;
+CREATE VIEW V5 AS SELECT Employee.Emp_id,concat(Employee.Emp_fname,' ',Employee.Emp_lname) AS Name,Dept.Dept_id,Dept.Dept_name FROM Employee,Dept WHERE Employee.Dept_id=Dept.Dept_id;
+
+Perform Manipulation on simple view-Insert, update, delete, drop view.
+INSERT INTO V4 VALUES(1020,"Shraddha Kokare",102,"Comp");
+
+
+Find highest paid salary per Position
+SELECT * FROM Employee;
+SELECT Emp_Position,MAX(Emp_salary) FROM Employee GROUP BY Emp_Position;
++--------------+-----------------+
+| Emp_Position | MAX(Emp_salary) |
++--------------+-----------------+
+| Developer    |           50000 |
+| Lead         |            4000 |
+| Manager      |           50000 |
+| Supervisor   |            5000 |
+| Team Lead    |           60000 |
+| Tester       |            5000 |
++--------------+-----------------+
+6 rows in set (0.00 sec)
+
+
+
+Find highest paid salaried employee details
+SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_salary) FROM Employee);
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+1 row in set (0.00 sec)
+
+
+Find second highest paid salaried employee details
+SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_Salary) FROM Employee WHERE Emp_Salary < (SELECT MAX(Emp_salary) FROM Employee));
+SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_Salary) FROM Employee WHERE Emp_Salary < (SELECT MAX(Emp_salary) FROM Employee));
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1021 |     106 | Rosy      | Malhan    | Developer    |      55000 | 1998-01-07   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=====================================================================================================================================================
+                                                              TERMINAL
+=====================================================================================================================================================
+
+pict@pict-OptiPlex-5070:~$ mysql -h 10.10.8.119 -u te31427 -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 198
+Server version: 5.5.5-10.4.19-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases
+    -> ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| te31427_db         |
++--------------------+
+2 rows in set (0.01 sec)
+
+mysql> use te31427_db
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++----------------------+
+| Tables_in_te31427_db |
++----------------------+
+| Dept                 |
+| Employee             |
+| Project              |
+| V1_Emp               |
+| V2_Emp               |
+| v3_Emp               |
++----------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Employee
+    -> ;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Dept;
++---------+-----------+---------------+
+| Dept_id | Dept_name | Dept_location |
++---------+-----------+---------------+
+|     101 | AIDS      | A1            |
+|     102 | IT        | A3            |
+|     103 | ENTC      | A3            |
+|     104 | Mech      | A5            |
+|     105 | Civil     | A1            |
+|     106 | Comp      | A1            |
+|     109 | ECE       | A4            |
++---------+-----------+---------------+
+7 rows in set (0.01 sec)
+
+mysql> select * from Project;
++---------+---------+-------------+---------------+-----------+-----------+
+| Proj_id | Dept_id | Proj_Name   | Proj_Location | Proj_cost | Proj_year |
++---------+---------+-------------+---------------+-----------+-----------+
+|       1 |     102 | CyberSecure | A1            |     30000 |      1998 |
+|       2 |     106 | ERP         | A4            |     20000 |      2005 |
+|       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|       4 |     103 | MIS         | A3            |     50000 |      2008 |
+|       5 |     104 | AIGuard     | A1            |     40000 |      2005 |
+|       6 |     102 | SmartTrack  | A5            |     25000 |      2004 |
+|       7 |     102 | SmartTech   | Hyderabad     |      2000 |      2004 |
++---------+---------+-------------+---------------+-----------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee INNER JOIN Project ON Employee.Dept_id=Project.Dept_id WHERE Proj_Location!='Hyderabad';
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate | Proj_id | Dept_id | Proj_Name   | Proj_Location | Proj_cost | Proj_year |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |       4 |     103 | MIS         | A3            |     50000 |      2008 |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |       4 |     103 | MIS         | A3            |     50000 |      2008 |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |       5 |     104 | AIGuard     | A1            |     40000 |      2005 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       1 |     102 | CyberSecure | A1            |     30000 |      1998 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       6 |     102 | SmartTrack  | A5            |     25000 |      2004 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |       4 |     103 | MIS         | A3            |     50000 |      2008 |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT Employee.Emp_id,Employee.Emp_fname,Project.Proj_id,Project.Proj_cost FROM Employee INNER JOIN Project ON Employee.Dept_id=Project.Dept_id WHERE Proj_Location!='Hyderabad';
++--------+-----------+---------+-----------+
+| Emp_id | Emp_fname | Proj_id | Proj_cost |
++--------+-----------+---------+-----------+
+|   1001 | Samir     |       3 |     50000 |
+|   1003 | Rani      |       3 |     50000 |
+|   1005 | Chetan    |       4 |     50000 |
+|   1006 | Pankaj    |       3 |     50000 |
+|   1008 | Ramesh    |       4 |     50000 |
+|   1009 | Smita     |       5 |     40000 |
+|   1010 | Kashmira  |       1 |     30000 |
+|   1010 | Kashmira  |       6 |     25000 |
+|   1012 | Reshma    |       4 |     50000 |
++--------+-----------+---------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> insert into Project VALUES(8,102,"SmartSolutions","Mumbai",5000,2020);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT E.Emp_id,concat(E.Emp_fname," ",E.Emp_lname) as Name,D.Dept_name,E.Emp_Position from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id;
+SELECT E.Emp_id,concat(E.Emp_fname," ",E.Emp_lname) as Name,D.Dept_name,E.Emp_Position from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id;
+^C
+mysql> SELECT E.Emp_id,concat(E.Emp_fname," ",E.Emp_lname) as Name,D.Dept_name,E.Emp_Position from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id;
++--------+-----------------+-----------+--------------+
+| Emp_id | Name            | Dept_name | Emp_Position |
++--------+-----------------+-----------+--------------+
+|   1001 | Samir Vadake    | AIDS      | Supervisor   |
+|   1003 | Rani Macron     | AIDS      | Tester       |
+|   1005 | Chetan Kakade   | ENTC      | Supervisor   |
+|   1006 | Pankaj Sharma   | AIDS      | Manager      |
+|   1008 | Ramesh Khanna   | ENTC      | Manager      |
+|   1009 | Smita Arora     | Mech      | Developer    |
+|   1010 | Kashmira Shaikh | IT        | Developer    |
+|   1010 | Kashmira Shaikh | IT        | Developer    |
+|   1010 | Kashmira Shaikh | IT        | Developer    |
+|   1010 | Kashmira Shaikh | IT        | Developer    |
+|   1012 | Reshma Chavan   | ENTC      | Lead         |
++--------+-----------------+-----------+--------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT E.Emp_id,concat(E.Emp_fname," ",E.Emp_lname) as Name,D.Dept_name,E.Emp_Position from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id WHERE P.Proj_year=2020;
++--------+-----------------+-----------+--------------+
+| Emp_id | Name            | Dept_name | Emp_Position |
++--------+-----------------+-----------+--------------+
+|   1010 | Kashmira Shaikh | IT        | Developer    |
++--------+-----------------+-----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id;
++---------+---------+----------------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+| Proj_id | Dept_id | Proj_Name      | Proj_Location | Proj_cost | Proj_year | Dept_id | Dept_name | Dept_location | Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++---------+---------+----------------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+|       3 |     101 | FinTrack       | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|       3 |     101 | FinTrack       | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|       4 |     103 | MIS            | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|       3 |     101 | FinTrack       | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|       4 |     103 | MIS            | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|       5 |     104 | AIGuard        | A1            |     40000 |      2005 |     104 | Mech      | A5            |   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|       1 |     102 | CyberSecure    | A1            |     30000 |      1998 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       6 |     102 | SmartTrack     | A5            |     25000 |      2004 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       7 |     102 | SmartTech      | Hyderabad     |      2000 |      2004 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       8 |     102 | SmartSolutions | Mumbai        |      5000 |      2020 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       4 |     103 | MIS            | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
++---------+---------+----------------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT * from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id;
++---------+---------+----------------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+| Proj_id | Dept_id | Proj_Name      | Proj_Location | Proj_cost | Proj_year | Dept_id | Dept_name | Dept_location | Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++---------+---------+----------------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+|       3 |     101 | FinTrack       | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|       3 |     101 | FinTrack       | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|       4 |     103 | MIS            | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|       3 |     101 | FinTrack       | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|       4 |     103 | MIS            | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|       5 |     104 | AIGuard        | A1            |     40000 |      2005 |     104 | Mech      | A5            |   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|       1 |     102 | CyberSecure    | A1            |     30000 |      1998 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       6 |     102 | SmartTrack     | A5            |     25000 |      2004 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       7 |     102 | SmartTech      | Hyderabad     |      2000 |      2004 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       8 |     102 | SmartSolutions | Mumbai        |      5000 |      2020 |     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|       4 |     103 | MIS            | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
++---------+---------+----------------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+11 rows in set (0.00 sec)
+
+mysql> SELECT * from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id WHERE P.Proj_cost>30000;
++---------+---------+-----------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+| Proj_id | Dept_id | Proj_Name | Proj_Location | Proj_cost | Proj_year | Dept_id | Dept_name | Dept_location | Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++---------+---------+-----------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+|       3 |     101 | FinTrack  | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|       3 |     101 | FinTrack  | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|       4 |     103 | MIS       | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|       3 |     101 | FinTrack  | A3            |     50000 |      2007 |     101 | AIDS      | A1            |   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|       4 |     103 | MIS       | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|       5 |     104 | AIGuard   | A1            |     40000 |      2005 |     104 | Mech      | A5            |   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|       4 |     103 | MIS       | A3            |     50000 |      2008 |     103 | ENTC      | A3            |   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
++---------+---------+-----------+---------------+-----------+-----------+---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+7 rows in set (0.01 sec)
+
+mysql> SELECT E.Emp_Position,D.D_name from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id WHERE P.Proj_cost>30000;
+ERROR 1054 (42S22): Unknown column 'D.D_name' in 'field list'
+mysql> SELECT E.Emp_Position,D.D_name from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id WHERE P.Proj_cost>30000;
+ERROR 1054 (42S22): Unknown column 'D.D_name' in 'field list'
+mysql> SELECT E.Emp_Position,D.Dept_name from Project P JOIN Dept D ON P.Dept_id=D.Dept_id JOIN Employee E ON E.Dept_id=D.Dept_id WHERE P.Proj_cost>30000;
++--------------+-----------+
+| Emp_Position | Dept_name |
++--------------+-----------+
+| Supervisor   | AIDS      |
+| Tester       | AIDS      |
+| Supervisor   | ENTC      |
+| Manager      | AIDS      |
+| Manager      | ENTC      |
+| Developer    | Mech      |
+| Lead         | ENTC      |
++--------------+-----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into Project VALUES(9,106,"WorqHat","Pune",5000,2020),(10,103,"Icube","Hyderabad",5000,2020);
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE table Project Set Proj_year=2015 WHERE Proj_id=8;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'table Project Set Proj_year=2015 WHERE Proj_id=8' at line 1
+mysql> UPDATE Project Set Proj_year=2015 WHERE Proj_id=8;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Project Set Proj_year=2015 WHERE Proj_id=9;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Project;
++---------+---------+----------------+---------------+-----------+-----------+
+| Proj_id | Dept_id | Proj_Name      | Proj_Location | Proj_cost | Proj_year |
++---------+---------+----------------+---------------+-----------+-----------+
+|       1 |     102 | CyberSecure    | A1            |     30000 |      1998 |
+|       2 |     106 | ERP            | A4            |     20000 |      2005 |
+|       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|       5 |     104 | AIGuard        | A1            |     40000 |      2005 |
+|       6 |     102 | SmartTrack     | A5            |     25000 |      2004 |
+|       7 |     102 | SmartTech      | Hyderabad     |      2000 |      2004 |
+|       8 |     102 | SmartSolutions | Mumbai        |      5000 |      2015 |
+|       9 |     106 | WorqHat        | Pune          |      5000 |      2015 |
+|      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
++---------+---------+----------------+---------------+-----------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT Project.Proj_Name from Project WHERE Proj_year=2015;
++----------------+
+| Proj_Name      |
++----------------+
+| SmartSolutions |
+| WorqHat        |
++----------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Employee;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> INSERT INTO Employee VALUES(1007, 101, 'Varun', 'Sharma', 'Developer', 50000, '1980-06-12'),(1008, 101, 'Varun', 'Shaikh', 'Developer', 50000, '1980-06-12'),(1009, 101, 'Smita', 'Shah', 'Developer', 50000, '1980-06-12'),(1010, 101, 'Sunita', 'Kokare', 'Developer', 50000, '1980-06-12'),(1011, 101, 'Ujjwala', 'Patil', 'Developer', 50000, '1980-06-12'),(1012, 101, 'Sneha', 'Arora', 'Developer', 50000, '1980-06-12'),(1013, 101, 'Sham', 'Singh', 'Developer', 50000, '1980-06-12');
+ERROR 1062 (23000): Duplicate entry '1007' for key 'PRIMARY'
+mysql> INSERT INTO Employee VALUES(1014, 101, 'Varun', 'Sharma', 'Developer', 50000, '1980-06-12'),(1008, 101, 'Varun', 'Shaikh', 'Developer', 50000, '1980-06-12'),(1009, 101, 'Smita', 'Shah', 'Developer', 50000, '1980-06-12'),(1010, 101, 'Sunita', 'Kokare', 'Developer', 50000, '1980-06-12'),(1011, 101, 'Ujjwala', 'Patil', 'Developer', 50000, '1980-06-12'),(1012, 101, 'Sneha', 'Arora', 'Developer', 50000, '1980-06-12'),(1013, 101, 'Sham', 'Singh', 'Developer', 50000, '1980-06-12');
+ERROR 1062 (23000): Duplicate entry '1008' for key 'PRIMARY'
+mysql> select * from Employee;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+10 rows in set (0.01 sec)
+
+mysql> INSERT INTO Employee VALUES(1013, 101, 'Varun', 'Sharma', 'Developer', 50000, '1980-06-12'),(1014, 101, 'Varun', 'Shaikh', 'Developer', 50000, '1980-06-12'),(1015, 101, 'Smita', 'Shah', 'Developer', 50000, '1980-06-12'),(1016, 101, 'Sunita', 'Kokare', 'Developer', 50000, '1980-06-12'),(1017, 101, 'Ujjwala', 'Patil', 'Developer', 50000, '1980-06-12'),(1018, 101, 'Sneha', 'Arora', 'Developer', 50000, '1980-06-12'),(1019, 101, 'Sham', 'Singh', 'Developer', 50000, '1980-06-12');
+Query OK, 7 rows affected (0.04 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from Employee;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+17 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id;
++---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+| Dept_id | Dept_name | Dept_location | Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+|     101 | AIDS      | A1            |   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|     101 | AIDS      | A1            |   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|     101 | AIDS      | A1            |   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|     101 | AIDS      | A1            |   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|     101 | AIDS      | A1            |   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|     101 | AIDS      | A1            |   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|     101 | AIDS      | A1            |   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|     101 | AIDS      | A1            |   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|     101 | AIDS      | A1            |   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|     101 | AIDS      | A1            |   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
+|     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|     103 | ENTC      | A3            |   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|     103 | ENTC      | A3            |   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|     103 | ENTC      | A3            |   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
+|     104 | Mech      | A5            |   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|     105 | Civil     | A1            |   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
++---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+16 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id HAVING COUNT(*) GROUP BY D.Dept_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'GROUP BY D.Dept_id' at line 1
+mysql> SELECT * FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id GROUP BY D.Dept_id;
++---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+| Dept_id | Dept_name | Dept_location | Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+|     101 | AIDS      | A1            |   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|     102 | IT        | A3            |   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|     103 | ENTC      | A3            |   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|     104 | Mech      | A5            |   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|     105 | Civil     | A1            |   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
++---------+-----------+---------------+--------+---------+-----------+-----------+--------------+------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT D.Dept_id,D.Dept_name FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id GROUP BY D.Dept_id;
++---------+-----------+
+| Dept_id | Dept_name |
++---------+-----------+
+|     101 | AIDS      |
+|     102 | IT        |
+|     103 | ENTC      |
+|     104 | Mech      |
+|     105 | Civil     |
++---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT D.Dept_id,D.Dept_name,count(*) FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id GROUP BY D.Dept_id;
++---------+-----------+----------+
+| Dept_id | Dept_name | count(*) |
++---------+-----------+----------+
+|     101 | AIDS      |       10 |
+|     102 | IT        |        1 |
+|     103 | ENTC      |        3 |
+|     104 | Mech      |        1 |
+|     105 | Civil     |        1 |
++---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT D.Dept_id,D.Dept_name,count(*) FROM Dept D JOIN Employee E ON E.Dept_id=D.Dept_id GROUP BY D.Dept_id Having count(*)>3;
++---------+-----------+----------+
+| Dept_id | Dept_name | count(*) |
++---------+-----------+----------+
+|     101 | AIDS      |       10 |
++---------+-----------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Employee WHERE Emp_JoinDate<'2009-01-01';
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+16 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id;
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate | Proj_id | Dept_id | Proj_Name      | Proj_Location | Proj_cost | Proj_year |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       1 |     102 | CyberSecure    | A1            |     30000 |      1998 |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |       5 |     104 | AIGuard        | A1            |     40000 |      2005 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       6 |     102 | SmartTrack     | A5            |     25000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       7 |     102 | SmartTech      | Hyderabad     |      2000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       8 |     102 | SmartSolutions | Mumbai        |      5000 |      2015 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+21 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee E INNER JOIN Project P ON E.Dept_id=P.Dept_id;
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate | Proj_id | Dept_id | Proj_Name      | Proj_Location | Proj_cost | Proj_year |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       1 |     102 | CyberSecure    | A1            |     30000 |      1998 |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |       5 |     104 | AIGuard        | A1            |     40000 |      2005 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       6 |     102 | SmartTrack     | A5            |     25000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       7 |     102 | SmartTech      | Hyderabad     |      2000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       8 |     102 | SmartSolutions | Mumbai        |      5000 |      2015 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+21 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Employee E INNER JOIN Project P ON E.Dept_id=P.Dept_id;
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate | Proj_id | Dept_id | Proj_Name      | Proj_Location | Proj_cost | Proj_year |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       1 |     102 | CyberSecure    | A1            |     30000 |      1998 |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |       5 |     104 | AIGuard        | A1            |     40000 |      2005 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       6 |     102 | SmartTrack     | A5            |     25000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       7 |     102 | SmartTech      | Hyderabad     |      2000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       8 |     102 | SmartSolutions | Mumbai        |      5000 |      2015 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+21 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id GROUP BY P.Proj_id;
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate | Proj_id | Dept_id | Proj_Name      | Proj_Location | Proj_cost | Proj_year |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       1 |     102 | CyberSecure    | A1            |     30000 |      1998 |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |       3 |     101 | FinTrack       | A3            |     50000 |      2007 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |       4 |     103 | MIS            | A3            |     50000 |      2008 |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |       5 |     104 | AIGuard        | A1            |     40000 |      2005 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       6 |     102 | SmartTrack     | A5            |     25000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       7 |     102 | SmartTech      | Hyderabad     |      2000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       8 |     102 | SmartSolutions | Mumbai        |      5000 |      2015 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |      10 |     103 | Icube          | Hyderabad     |      5000 |      2020 |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+----------------+---------------+-----------+-----------+
+8 rows in set (0.01 sec)
+
+mysql> SELECT P.Proj_id,COUNT(Proj_id) FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id GROUP BY P.Proj_id;
++---------+----------------+
+| Proj_id | COUNT(Proj_id) |
++---------+----------------+
+|       1 |              1 |
+|       3 |             10 |
+|       4 |              3 |
+|       5 |              1 |
+|       6 |              1 |
+|       7 |              1 |
+|       8 |              1 |
+|      10 |              3 |
++---------+----------------+
+8 rows in set (0.01 sec)
+
+mysql> SELEC FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id GROUP BY P.Proj_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'SELEC FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id GROUP BY P.Proj_id' at line 1
+mysql> SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009;
+SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009;
+^C
+mysql> SELECT FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id GROUP BY P.Proj_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id GROUP BY P.Proj_id' at line 1
+mysql> SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009;
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate | Proj_id | Dept_id | Proj_Name   | Proj_Location | Proj_cost | Proj_year |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       1 |     102 | CyberSecure | A1            |     30000 |      1998 |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |       4 |     103 | MIS         | A3            |     50000 |      2008 |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |       4 |     103 | MIS         | A3            |     50000 |      2008 |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |       4 |     103 | MIS         | A3            |     50000 |      2008 |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |       5 |     104 | AIGuard     | A1            |     40000 |      2005 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       6 |     102 | SmartTrack  | A5            |     25000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       7 |     102 | SmartTech   | Hyderabad     |      2000 |      2004 |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+17 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009 GROUP BY P.Proj_id;
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate | Proj_id | Dept_id | Proj_Name   | Proj_Location | Proj_cost | Proj_year |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       1 |     102 | CyberSecure | A1            |     30000 |      1998 |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |       3 |     101 | FinTrack    | A3            |     50000 |      2007 |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |       4 |     103 | MIS         | A3            |     50000 |      2008 |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |       5 |     104 | AIGuard     | A1            |     40000 |      2005 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       6 |     102 | SmartTrack  | A5            |     25000 |      2004 |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |       7 |     102 | SmartTech   | Hyderabad     |      2000 |      2004 |
++--------+---------+-----------+-----------+--------------+------------+--------------+---------+---------+-------------+---------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(P.Proj_id) FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009 GROUP BY P.Proj_id;
++------------------+
+| COUNT(P.Proj_id) |
++------------------+
+|                1 |
+|               10 |
+|                3 |
+|                1 |
+|                1 |
+|                1 |
++------------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT P.Proj_Name,COUNT(P.Proj_id) FROM Employee E JOIN Project P ON E.Dept_id=P.Dept_id WHERE P.Proj_year<2009 GROUP BY P.Proj_id;
++-------------+------------------+
+| Proj_Name   | COUNT(P.Proj_id) |
++-------------+------------------+
+| CyberSecure |                1 |
+| FinTrack    |               10 |
+| MIS         |                3 |
+| AIGuard     |                1 |
+| SmartTrack  |                1 |
+| SmartTech   |                1 |
++-------------+------------------+
+6 rows in set (0.00 sec)
+
+mysql> SHOW TABLES;
+SHOW TABLES;
+^C
+mysql> show tables;
++----------------------+
+| Tables_in_te31427_db |
++----------------------+
+| Dept                 |
+| Employee             |
+| Project              |
+| V1_Emp               |
+| V2_Emp               |
+| v3_Emp               |
++----------------------+
+6 rows in set (0.00 sec)
+
+mysql> CREATE VIEW V4 AS Employee E JOIN Dept D ON Employee.Dept_id=Dept.Dept_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Employee E JOIN Dept D ON Employee.Dept_id=Dept.Dept_id' at line 1
+mysql> CREATE VIEW V4 AS Employee JOIN Dept ON Employee.Dept_id=Dept.Dept_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Employee JOIN Dept ON Employee.Dept_id=Dept.Dept_id' at line 1
+mysql> CREATE VIEW V4 AS SELECT * FROM Employee JOIN Dept ON Employee.Dept_id=Dept.Dept_id;
+ERROR 1060 (42S21): Duplicate column name 'Dept_id'
+mysql> CREATE VIEW V4 AS SELECT Emp_id,concat(Emp_fname,' ',Emp_lname),Dept.Dept_id,Dept.Dept_name FROM Employee WHERE Employee.Dept_id=Dept.Dept_id;
+ERROR 1054 (42S22): Unknown column 'Dept.Dept_id' in 'field list'
+mysql> CREATE VIEW V4 AS SELECT Employee.Emp_id,concat(Employee.Emp_fname,' ',Employee.Emp_lname),Dept.Dept_id,Dept.Dept_name FROM Employee,Dept WHERE Employee.Dept_id=Dept.Dept_id;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from V4;
++--------+---------------------------------------------------+---------+-----------+
+| Emp_id | concat(Employee.Emp_fname,' ',Employee.Emp_lname) | Dept_id | Dept_name |
++--------+---------------------------------------------------+---------+-----------+
+|   1001 | Samir Vadake                                      |     101 | AIDS      |
+|   1003 | Rani Macron                                       |     101 | AIDS      |
+|   1006 | Pankaj Sharma                                     |     101 | AIDS      |
+|   1013 | Varun Sharma                                      |     101 | AIDS      |
+|   1014 | Varun Shaikh                                      |     101 | AIDS      |
+|   1015 | Smita Shah                                        |     101 | AIDS      |
+|   1016 | Sunita Kokare                                     |     101 | AIDS      |
+|   1017 | Ujjwala Patil                                     |     101 | AIDS      |
+|   1018 | Sneha Arora                                       |     101 | AIDS      |
+|   1019 | Sham Singh                                        |     101 | AIDS      |
+|   1010 | Kashmira Shaikh                                   |     102 | IT        |
+|   1005 | Chetan Kakade                                     |     103 | ENTC      |
+|   1008 | Ramesh Khanna                                     |     103 | ENTC      |
+|   1012 | Reshma Chavan                                     |     103 | ENTC      |
+|   1009 | Smita Arora                                       |     104 | Mech      |
+|   1007 | Ratan Roy                                         |     105 | Civil     |
++--------+---------------------------------------------------+---------+-----------+
+16 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Employee;
+SELECT * FROM Employee;
+^C
+mysql> select * from Employee;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+17 rows in set (0.00 sec)
+
+mysql> INSERT INTO V4 VALUES(1020,"Shraddha Kokare",102,"Comp");
+ERROR 1394 (HY000): Can not insert into join view 'te31427_db.V4' without fields list
+mysql> CREATE VIEW V5 AS SELECT Employee.Emp_id,concat(Employee.Emp_fname,' ',Employee.Emp_lname) AS Name,Dept.Dept_id,Dept.Dept_name FROM Employee,Dept WHERE Employee.Dept_id=Dept.Dept_id;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from V5;
++--------+-----------------+---------+-----------+
+| Emp_id | Name            | Dept_id | Dept_name |
++--------+-----------------+---------+-----------+
+|   1001 | Samir Vadake    |     101 | AIDS      |
+|   1003 | Rani Macron     |     101 | AIDS      |
+|   1006 | Pankaj Sharma   |     101 | AIDS      |
+|   1013 | Varun Sharma    |     101 | AIDS      |
+|   1014 | Varun Shaikh    |     101 | AIDS      |
+|   1015 | Smita Shah      |     101 | AIDS      |
+|   1016 | Sunita Kokare   |     101 | AIDS      |
+|   1017 | Ujjwala Patil   |     101 | AIDS      |
+|   1018 | Sneha Arora     |     101 | AIDS      |
+|   1019 | Sham Singh      |     101 | AIDS      |
+|   1010 | Kashmira Shaikh |     102 | IT        |
+|   1005 | Chetan Kakade   |     103 | ENTC      |
+|   1008 | Ramesh Khanna   |     103 | ENTC      |
+|   1012 | Reshma Chavan   |     103 | ENTC      |
+|   1009 | Smita Arora     |     104 | Mech      |
+|   1007 | Ratan Roy       |     105 | Civil     |
++--------+-----------------+---------+-----------+
+16 rows in set (0.01 sec)
+
+mysql> INSERT INTO V4 (Emp_id,Name,Dept_id,Dept_name) VALUES(1020,"Shraddha Kokare",102,"Comp");
+ERROR 1054 (42S22): Unknown column 'Name' in 'field list'
+mysql> INSERT INTO V5 (Emp_id,Name,Dept_id,Dept_name) VALUES(1020,"Shraddha Kokare",102,"Comp");
+ERROR 1393 (HY000): Can not modify more than one base table through a join view 'te31427_db.V5'
+mysql> SELECT * FROM Employee;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+17 rows in set (0.00 sec)
+
+mysql> SELECT MAX(Emp_salary) FROM Employee;
++-----------------+
+| MAX(Emp_salary) |
++-----------------+
+|           60000 |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MAX(Emp_salary) FROM Employee GROUP BY Emp_Position;
++-----------------+
+| MAX(Emp_salary) |
++-----------------+
+|           50000 |
+|            4000 |
+|           50000 |
+|            5000 |
+|           60000 |
+|            5000 |
++-----------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT Emp_Position,MAX(Emp_salary) FROM Employee GROUP BY Emp_Position;
++--------------+-----------------+
+| Emp_Position | MAX(Emp_salary) |
++--------------+-----------------+
+| Developer    |           50000 |
+| Lead         |            4000 |
+| Manager      |           50000 |
+| Supervisor   |            5000 |
+| Team Lead    |           60000 |
+| Tester       |            5000 |
++--------------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee WHERE Emp_Salary=MAX(Emp_Salary);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> SELECT * FROM Employee WHERE Emp_Salary=MAX(Emp_Salary);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> SELECT Emp_id FROM Employee WHERE Emp_Salary=MAX(Emp_Salary);
+ERROR 1111 (HY000): Invalid use of group function
+mysql> SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_salary) FROM Employee);
+SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_salary) FROM Employee);
+^C
+mysql> SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_salary) FROM Employee);
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT * FROM Employee ORDER BY Emp_salary;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+17 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee ORDER BY Emp_salary DESC;
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1007 |     105 | Ratan     | Roy       | Team Lead    |      60000 | 1980-06-12   |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|   1009 |     104 | Smita     | Arora     | Developer    |      40000 | 1979-06-12   |
+|   1010 |     102 | Kashmira  | Shaikh    | Developer    |      35000 | 1981-08-12   |
+|   1001 |     101 | Samir     | Vadake    | Supervisor   |       5000 | 2005-01-05   |
+|   1005 |     103 | Chetan    | Kakade    | Supervisor   |       5000 | 1997-01-05   |
+|   1003 |     101 | Rani      | Macron    | Tester       |       5000 | 1997-01-05   |
+|   1012 |     103 | Reshma    | Chavan    | Lead         |       4000 | 1999-04-07   |
+|   1011 |    NULL | Sarvesh   | NULL      | Tester       |       NULL | NULL         |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+17 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_Salary) FROM Employee WHERE Emp_Salary < (SELECT MAX(Emp_salary) FROM Employee));
+SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_Salary) FROM Employee WHERE Emp_Salary < (SELECT MAX(Emp_salary) FROM Employee));
+^C
+mysql> SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_Salary) FROM Employee WHERE Emp_Salary < (SELECT MAX(Emp_salary) FROM Employee));
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1006 |     101 | Pankaj    | Sharma    | Manager      |      50000 | 1980-06-12   |
+|   1008 |     103 | Ramesh    | Khanna    | Manager      |      50000 | 1980-06-12   |
+|   1013 |     101 | Varun     | Sharma    | Developer    |      50000 | 1980-06-12   |
+|   1014 |     101 | Varun     | Shaikh    | Developer    |      50000 | 1980-06-12   |
+|   1015 |     101 | Smita     | Shah      | Developer    |      50000 | 1980-06-12   |
+|   1016 |     101 | Sunita    | Kokare    | Developer    |      50000 | 1980-06-12   |
+|   1017 |     101 | Ujjwala   | Patil     | Developer    |      50000 | 1980-06-12   |
+|   1018 |     101 | Sneha     | Arora     | Developer    |      50000 | 1980-06-12   |
+|   1019 |     101 | Sham      | Singh     | Developer    |      50000 | 1980-06-12   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+9 rows in set (0.01 sec)
+
+mysql> insert into Employee values(1021,106,"Rosy","Malhan","Developer",55000,'1998-1-7');
+insert into Employee values(1021,106,"Rosy","Malhan","Developer",55000,'1998-1-7');
+^C
+mysql> insert into Employee values(1021,106,"Rosy","Malhan","Developer",55000,'1998-1-7')
+    -> ;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> SELECT * FROM Employee WHERE Emp_Salary=(SELECT MAX(Emp_Salary) FROM Employee WHERE Emp_Salary < (SELECT MAX(Emp_salary) FROM Employee));
++--------+---------+-----------+-----------+--------------+------------+--------------+
+| Emp_id | Dept_id | Emp_fname | Emp_lname | Emp_Position | Emp_salary | Emp_JoinDate |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+|   1021 |     106 | Rosy      | Malhan    | Developer    |      55000 | 1998-01-07   |
++--------+---------+-----------+-----------+--------------+------------+--------------+
+1 row in set (0.00 sec)
+
