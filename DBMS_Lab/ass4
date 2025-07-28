@@ -1,0 +1,549 @@
+pict@pict-OptiPlex-5070:~$ mysql -h 10.10.8.119 -u te31427 -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 136
+Server version: 5.5.5-10.4.19-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use 31427_db;
+ERROR 1044 (42000): Access denied for user 'te31427'@'%' to database '31427_db'
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| te31427_db         |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql> use te31427_db;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> create table Stud(Roll int, name varchar(15),marks int,grade char(2));
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> delimiter #
+mysql> create procedure insertVal(in roll int,in name varchar(15),in marks int)
+    -> begin
+    ->     INSERT INTO Result VALUES(roll,name,marks);
+    -> end
+    -> #
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> delimiter ;
+mysql> insertVal(101,"Shlok",90);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'insertVal(101,"Shlok",90)' at line 1
+mysql> delimiter #
+mysql> create procedure insertVal(in rollno int,in names varchar(15),in mark int)
+    -> begin
+    ->     INSERT INTO Result(roll,name,marks) VALUES(rollno,names,mark);
+    -> end
+    -> #
+ERROR 1304 (42000): PROCEDURE insertVal already exists
+mysql> delete procedure insertVal;
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'procedure insertVal' at line 1
+mysql> delete procedure insertVal#
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'procedure insertVal' at line 1
+mysql> delimiter ;
+mysql> drop procedure insertVal;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> delimiter #
+mysql> create procedure insertVal(in rollno int,in names varchar(15),in mark int)
+    -> begin
+    ->     INSERT INTO Result(roll,name,marks) VALUES(rollno,names,mark);
+    -> end
+    -> #
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> delimiter;
+    -> ;
+    -> ^C
+
+^C
+mysql> delimiter ;
+mysql> call insertVal(101,"Shyam",85);
+ERROR 1146 (42S02): Table 'te31427_db.Result' doesn't exist
+mysql> show tables;
++----------------------+
+| Tables_in_te31427_db |
++----------------------+
+| Dept                 |
+| Employee             |
+| Project              |
+| Stud                 |
+| V1_Emp               |
+| V2_Emp               |
+| V4                   |
+| V5                   |
+| v3_Emp               |
++----------------------+
+9 rows in set (0.00 sec)
+
+mysql> create table Result(Roll int, name varchar(15),marks int,grade char(2));
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> call insertVal(101,"Shyam",85);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call insertVal(102,"Rani",90);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call insertVal(103,"Mohini",60);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> call insertVal(104,"Raj",40);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Result;
++------+--------+-------+-------+
+| Roll | name   | marks | grade |
++------+--------+-------+-------+
+|  101 | Shyam  |    85 | NULL  |
+|  102 | Rani   |    90 | NULL  |
+|  103 | Mohini |    60 | NULL  |
+|  104 | Raj    |    40 | NULL  |
++------+--------+-------+-------+
+4 rows in set (0.00 sec)
+
+mysql> call insertVal(105,"Shreeja",50);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Result;
++------+---------+-------+-------+
+| Roll | name    | marks | grade |
++------+---------+-------+-------+
+|  101 | Shyam   |    85 | NULL  |
+|  102 | Rani    |    90 | NULL  |
+|  103 | Mohini  |    60 | NULL  |
+|  104 | Raj     |    40 | NULL  |
+|  105 | Shreeja |    50 | NULL  |
++------+---------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE @m int;
+    ->     SET m=SELECT mark from Result WHERE roll=rollno;
+    -> 
+    ->     if m<70
+    ->         UPDATE TABLE Result set grade='D';
+    ->     else if m<80
+    ->         UPDATE TABLE Result set grade='C';
+    ->     else if m<90
+    ->         UPDATE TABLE Result set grade='B';
+    ->     else
+    ->         UPDATE TABLE Result set grade='A';
+    ->     end if
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '@m int;
+    SET m=SELECT mark from Result WHERE roll=rollno;
+
+    if m<70
+   ...' at line 3
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE @m int;
+    ->     SET m=SELECT mark from Result WHERE roll=rollno;
+    -> 
+    ->     if m<70
+    ->         UPDATE TABLE Result set grade='D' WHERE roll=rollno;
+    ->     else if m<80
+    ->         UPDATE TABLE Result set grade='C' WHERE roll=rollno;
+    ->     else if m<90
+    ->         UPDATE TABLE Result set grade='B' WHERE roll=rollno;
+    ->     else
+    ->         UPDATE TABLE Result set grade='A' WHERE roll=rollno;
+    ->     end if
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '@m int;
+    SET m=SELECT mark from Result WHERE roll=rollno;
+
+    if m<70
+   ...' at line 3
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE @m int;
+    ->     SET @m=SELECT mark from Result WHERE roll=rollno;
+    -> 
+    ->     if @m<70
+    ->         UPDATE TABLE Result set grade='D' WHERE roll=rollno;
+    ->     else if @m<80
+    ->         UPDATE TABLE Result set grade='C' WHERE roll=rollno;
+    ->     else if @m<90
+    ->         UPDATE TABLE Result set grade='B' WHERE roll=rollno;
+    ->     else
+    ->         UPDATE TABLE Result set grade='A' WHERE roll=rollno;
+    ->     end if
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '@m int;
+    SET @m=SELECT mark from Result WHERE roll=rollno;
+
+    if @m<70
+ ...' at line 3
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE @m int;
+    ->     SET @m=(SELECT mark from Result WHERE roll=rollno);
+    -> 
+    ->     if @m<70
+    ->         UPDATE TABLE Result set grade='D' WHERE roll=rollno;
+    ->     else if @m<80
+    ->         UPDATE TABLE Result set grade='C' WHERE roll=rollno;
+    ->     else if @m<90
+    ->         UPDATE TABLE Result set grade='B' WHERE roll=rollno;
+    ->     else
+    ->         UPDATE TABLE Result set grade='A' WHERE roll=rollno;
+    ->     end if
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '@m int;
+    SET @m=(SELECT mark from Result WHERE roll=rollno);
+
+    if @m<70...' at line 3
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE m int;
+    ->     SET m=(SELECT mark from Result WHERE roll=rollno);
+    -> 
+    ->     if m<70 then
+    ->         UPDATE TABLE Result set grade='D' WHERE roll=rollno;
+    ->     else if m<80 then
+    ->         UPDATE TABLE Result set grade='C' WHERE roll=rollno;
+    ->     else if m<90 then
+    ->         UPDATE TABLE Result set grade='B' WHERE roll=rollno;
+    ->     else 
+    ->         UPDATE TABLE Result set grade='A' WHERE roll=rollno;
+    ->     end if
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'TABLE Result set grade='D' WHERE roll=rollno;
+    else if m<80 then
+        U...' at line 7
+mysql> delimiter ;
+mysql> DELIMITER #
+mysql> 
+mysql> CREATE PROCEDURE insertGrades(IN rollno INT)
+    -> BEGIN
+    ->     DECLARE m INT;
+    ->     SET m = (SELECT mark FROM Result WHERE roll = rollno);
+    -> 
+    ->     IF m < 70 THEN
+    ->         UPDATE Result SET grade = 'D' WHERE roll = rollno;
+    ->     ELSEIF m < 80 THEN
+    ->         UPDATE Result SET grade = 'C' WHERE roll = rollno;
+    ->     ELSEIF m < 90 THEN
+    ->         UPDATE Result SET grade = 'B' WHERE roll = rollno;
+    ->     ELSE
+    ->         UPDATE Result SET grade = 'A' WHERE roll = rollno;
+    ->     END IF;
+    -> END
+    -> #
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> drop procedure insertGrades;
+    -> #
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE m int;
+    ->     SET m=(SELECT mark from Result WHERE roll=rollno);
+    -> 
+    ->     if m<70 then
+    ->         UPDATE Result set grade='D' WHERE roll=rollno;
+    ->     else if m<80 then
+    ->         UPDATE Result set grade='C' WHERE roll=rollno;
+    ->     else if m<90 then
+    ->         UPDATE Result set grade='B' WHERE roll=rollno;
+    ->     else 
+    ->         UPDATE Result set grade='A' WHERE roll=rollno;
+    ->     end if
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'end' at line 15
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE m int;
+    ->     SET m=(SELECT mark from Result WHERE roll=rollno);
+    -> 
+    ->     if m<70 then
+    ->         UPDATE Result set grade='D' WHERE roll=rollno;
+    ->     else if m<80 then
+    ->         UPDATE Result set grade='C' WHERE roll=rollno;
+    ->     else if m<90 then
+    ->         UPDATE Result set grade='B' WHERE roll=rollno;
+    ->     else 
+    ->         UPDATE Result set grade='A' WHERE roll=rollno;
+    ->     end if;
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 15
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE m int;
+    ->     SET m=(SELECT mark from Result WHERE roll=rollno);
+    -> 
+    ->     if m<70 then
+    ->         UPDATE Result set grade='D' WHERE roll=rollno;
+    ->     else if m<80 then
+    ->         UPDATE Result set grade='C' WHERE roll=rollno;
+    ->     else if m<90 then
+    ->         UPDATE Result set grade='B' WHERE roll=rollno;
+    ->     else 
+    ->         UPDATE Result set grade='A' WHERE roll=rollno;
+    ->     end if;
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 15
+mysql> delimiter ;
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE m int;
+    ->     SET m=(SELECT mark from Result WHERE roll=rollno);
+    -> 
+    ->     if m<70 then
+    ->         UPDATE Result set grade='D' WHERE roll=rollno;
+    ->     else if m<80 then
+    ->         UPDATE Result set grade='C' WHERE roll=rollno;
+    ->     else if m<90 then
+    ->         UPDATE Result set grade='B' WHERE roll=rollno;
+    ->     else 
+    ->         UPDATE Result set grade='A' WHERE roll=rollno;
+    ->     end if;
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 15
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE m int;
+    ->     SET m=(SELECT mark from Result WHERE roll=rollno);
+    -> 
+    ->     if m<70 then
+    ->         UPDATE Result set grade='D' WHERE roll=rollno;
+    ->     elseif m<80 then
+    ->         UPDATE Result set grade='C' WHERE roll=rollno;
+    ->     elseif m<90 then
+    ->         UPDATE Result set grade='B' WHERE roll=rollno;
+    ->     else 
+    ->         UPDATE Result set grade='A' WHERE roll=rollno;
+    ->     end if;
+    -> end
+    -> #
+Query OK, 0 rows affected (0.12 sec)
+
+mysql> call insertGrades(101);
+    -> #
+ERROR 1054 (42S22): Unknown column 'mark' in 'field list'
+mysql> desc Result#
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Roll  | int(11)     | YES  |     | NULL    |       |
+| name  | varchar(15) | YES  |     | NULL    |       |
+| marks | int(11)     | YES  |     | NULL    |       |
+| grade | char(2)     | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> drop procedure insertGrades;
+    -> #
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> delimiter #
+mysql> create procedure insertGrades(in rollno int)
+    -> begin
+    ->     DECLARE m int;
+    ->     SET m=(SELECT marks from Result WHERE roll=rollno);
+    -> 
+    ->     if m<70 then
+    ->         UPDATE Result set grade='D' WHERE roll=rollno;
+    ->     elseif m<80 then
+    ->         UPDATE Result set grade='C' WHERE roll=rollno;
+    ->     elseif m<90 then
+    ->         UPDATE Result set grade='B' WHERE roll=rollno;
+    ->     else 
+    ->         UPDATE Result set grade='A' WHERE roll=rollno;
+    ->     end if;
+    -> end
+    -> #
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> call insertGrades(101);
+    -> #
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from Result;
+    -> #
++------+---------+-------+-------+
+| Roll | name    | marks | grade |
++------+---------+-------+-------+
+|  101 | Shyam   |    85 | B     |
+|  102 | Rani    |    90 | NULL  |
+|  103 | Mohini  |    60 | NULL  |
+|  104 | Raj     |    40 | NULL  |
+|  105 | Shreeja |    50 | NULL  |
++------+---------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> delimiter ;
+mysql> call insertGrades(102);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call insertGrades(103);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> call insertGrades(104);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call insertGrades(105);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Result;
++------+---------+-------+-------+
+| Roll | name    | marks | grade |
++------+---------+-------+-------+
+|  101 | Shyam   |    85 | B     |
+|  102 | Rani    |    90 | A     |
+|  103 | Mohini  |    60 | D     |
+|  104 | Raj     |    40 | D     |
+|  105 | Shreeja |    50 | D     |
++------+---------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> delimiter #
+mysql> create procedure circleArea(in radius int)
+    -> begin
+    ->     DECLARE area float;
+    ->     set area=3.14*radius*radius;
+    ->     print(area);
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(area);
+end' at line 5
+mysql> delimiter #
+mysql> create procedure circleArea(in radius int)
+    -> begin
+    ->     DECLARE area float;
+    ->     set area=3.14*radius*radius;
+    ->     print area;
+    -> end
+    -> #
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'area;
+end' at line 5
+mysql> delimiter ;
+mysql> create table circle(radius int, area float, check (radius between 5 and 9));
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> delimiter #
+mysql> create procedure calcArea(in radius int)
+    -> begin
+    ->     INSERT into circle VALUES(radius,radius*3.14*radius);
+    -> end
+    -> #
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> call calcArea(5);
+    -> #
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from circle;
+    -> #
++--------+------+
+| radius | area |
++--------+------+
+|      5 | 78.5 |
++--------+------+
+1 row in set (0.00 sec)
+
+mysql> delimiter ;
+mysql> call calcArea(7);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call calcArea(2);
+ERROR 4025 (23000): CONSTRAINT `CONSTRAINT_1` failed for `te31427_db`.`circle`
+mysql> call calcArea(7);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call calcArea(8);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call calcArea(9);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> call calcArea(6);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from circle;
++--------+--------+
+| radius | area   |
++--------+--------+
+|      5 |   78.5 |
+|      7 | 153.86 |
+|      7 | 153.86 |
+|      8 | 200.96 |
+|      9 | 254.34 |
+|      6 | 113.04 |
++--------+--------+
+6 rows in set (0.00 sec)
+
+mysql> delimiter #
+mysql> create procedure calcArea(in radius int)
+    -> begin
+    ->     INSERT into circle VALUES(radius,radius*3.14*radius);
+    -> end
+    -> 
+    -> #
+ERROR 1304 (42000): PROCEDURE calcArea already exists
+mysql> CREATE TABLE Stud_marks(Name varchar(20) PRIMARY KEY,Marks int);
+    -> #
+Query OK, 0 rows affected (0.20 sec)
+
+mysql> delimiter ;
+mysql> CREATE TABLE Results(Rollno int,Name varchar(20),Class varchar(20),FOREIGN KEY(Name) REFERENCES Stud_marks(Name));
+Query OK, 0 rows affected (0.33 sec)
+
+mysql> INSERT INTO Stud_marks VALUES("Micheal",800),("Jenny",850),("Kartik",950),("Shweta",1500),("Roy","1400"),("Kashmira",1052),("Sneha",920),("Manik",815);
+Query OK, 8 rows affected (0.03 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from Stud_marks;
++----------+-------+
+| Name     | Marks |
++----------+-------+
+| Jenny    |   850 |
+| Kartik   |   950 |
+| Kashmira |  1052 |
+| Manik    |   815 |
+| Micheal  |   800 |
+| Roy      |  1400 |
+| Shweta   |  1500 |
+| Sneha    |   920 |
++----------+-------+
+8 rows in set (0.00 sec)
+
+mysql> 
+
