@@ -1,0 +1,159 @@
+#include <bits/stdc++.h>
+#define ll long long int
+using namespace std;
+
+void transmission(ll &i, ll &N, ll &tf, ll &tt)
+{
+    while (i <= tf)
+    {
+        cout << "Current Window: [" << i << " - " << min(i + N - 1, tf) << "]\n";
+
+        int z = 0;
+        bool timeout_occurred = false;
+        ll timeout_frame = -1;
+
+        // Send frames in current window starting at i
+        for (int k = i; k < i + N && k <= tf; k++)
+        {
+            cout << "Sending Frame " << k << "..." << endl;
+            tt++;
+            std::this_thread::sleep_for(std::chrono::seconds(1)); // 1 second delay
+        }
+
+        // Check acknowledgments starting from i
+        for (int k = i; k < i + N && k <= tf; k++)
+        {
+            int f = rand() % 2;
+            if (!f)
+            {
+                cout << "Acknowledgment for Frame " << k << "..." << endl;
+                std::this_thread::sleep_for(std::chrono::seconds(1)); // 1 second delay
+                z++;
+            }
+            else
+            {
+                cout << "Timeout!! Frame Number : " << k << " Not Received" << endl;
+                timeout_occurred = true;
+                timeout_frame = k;
+                break;
+            }
+        }
+
+        if (timeout_occurred)
+        {
+            // Retransmit window starting from the timed out frame
+            ll start = timeout_frame;
+            ll end = min(start + N - 1, tf);
+
+            cout << "\nRetransmitting Window [" << start << " - " << end << "]..." << endl
+                 << endl;
+
+            i = start;
+        }
+        else
+        {
+            // Slide window forward by number of acks received
+            i = i + z;
+            if (i <= tf)
+                cout << "Sliding window moved to [" << i << " - " << min(i + N - 1, tf) << "]\n\n";
+        }
+    }
+}
+
+void selectiveRepeat(ll totalFrames, ll windowSize)
+{
+    vector<bool> ackReceived(totalFrames + 1, false); // ack status for each frame
+    ll base = 1;                                      // start of the window
+    ll nextSeqNum = 1;                                // next frame to send
+    ll totalSent = 0;
+    srand(time(NULL));
+
+    while (base <= totalFrames)
+    {
+        // Send frames within window
+        while (nextSeqNum < base + windowSize && nextSeqNum <= totalFrames)
+        {
+            if (!ackReceived[nextSeqNum])
+            {
+                cout << "Sending Frame " << nextSeqNum << "..." << endl;
+                totalSent++;
+                std::this_thread::sleep_for(std::chrono::milliseconds(500)); // 0.5 sec delay
+            }
+            nextSeqNum++;
+        }
+
+        // Simulate acknowledgment for each frame in window individually
+        for (ll i = base; i < base + windowSize && i <= totalFrames; i++)
+        {
+            if (!ackReceived[i])
+            {
+                int f = rand() % 2; // 0 = ACK received, 1 = timeout
+                if (f == 0)
+                {
+                    cout << "Acknowledgment received for Frame " << i << endl;
+                    ackReceived[i] = true;
+                }
+                else
+                {
+                    cout << "Timeout for Frame " << i << "! Retransmitting..." << endl;
+                    // Retransmit frame next iteration, so just don't mark ackReceived
+                }
+                std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            }
+        }
+
+        // Slide window forward for consecutive ACKed frames from base
+        while (base <= totalFrames && ackReceived[base])
+        {
+            base++;
+        }
+
+        if (base > totalFrames)
+            break;
+
+        cout << "Current Window: [" << base << " - " << min(base + windowSize - 1, totalFrames) << "]\n\n";
+        std::this_thread::sleep_for(std::chrono::seconds(1)); // wait before next sending round
+    }
+
+    cout << "Total frames sent (including retransmissions): " << totalSent << endl;
+}
+
+int main()
+{
+    ll tf, N, tt = 0, m;
+    int n;
+    cout << "\nEnter m: ";
+    cin >> m;
+    srand(time(NULL));
+    // cout << "Enter the Total number of frames : ";
+    // cin >> tf;
+    // N = pow(2, m) - 1;
+    // cout << "Window Size : " << N << endl;
+
+    do
+    {
+        ll i = 1;
+        cout << "Choose the ARQ protocol: 1. Go-Back-N \t2. Selective Repeat\t3. Exit: ";
+        cin >> n;
+        if (n == 1)
+        {
+            srand(time(NULL));
+            cout << "Enter the Total number of frames : ";
+            cin >> tf;
+            N = pow(2, m) - 1;
+            cout << "\nWindow Size : " << N << endl;
+            transmission(i, N, tf, tt);
+        }
+        if (n == 2)
+        {
+            srand(time(NULL));
+            cout << "Enter the Total number of frames : ";
+            cin >> tf;
+            N = pow(2, m - 1);
+            cout << "\nWindow Size : " << N << endl;
+            selectiveRepeat(tf, N);
+        }
+    } while (n != 3);
+
+    return 0;
+}
