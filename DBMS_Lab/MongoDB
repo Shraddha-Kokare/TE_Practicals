@@ -1,0 +1,77 @@
+MONGODB Assignment B1
+
+
+_id: ObjectId('68ce27e8725cbbceffce5f51'),
+    address: {
+      building: '65',
+      coord: [ -73.9782725, 40.7624022 ],
+      street: 'West   54 Street',
+      zipcode: '10019'
+    },
+    borough: 'Manhattan',
+    cuisine: 'American ',
+    grades: [
+      { date: { '$date': 1408665600000 }, grade: 'A', score: 11 },
+      { date: { '$date': 1395964800000 }, grade: 'C', score: 131 },
+      { date: { '$date': 1380067200000 }, grade: 'A', score: 11 },
+      { date: { '$date': 1365379200000 }, grade: 'B', score: 25 },
+      { date: { '$date': 1350259200000 }, grade: 'A', score: 11 },
+      { date: { '$date': 1318982400000 }, grade: 'A', score: 13 }
+    ],
+    name: "Murals On 54/Randolphs'S",
+    restaurant_id: '40372466'
+  
+
+1. Write a MongoDB query to display all the documents in the collection restaurants. 
+db.Restaurants.find()
+
+2. Write a MongoDB query to display the fields restaurant_id, name, borough and cuisine for all the documents in the collection restaurant. 
+db.Restaurants.find({},{restaurant_id:1,name:1,borough: 1,cuisine:1})
+
+3. Write a MongoDB query to display the fields restaurant_id, name, borough and cuisine, but exclude the field _id for all the documents in the collection restaurant. 
+db.Restaurants.find({},{restaurant_id:1,name:1,borough: 1,cuisine:1,_id:0})
+
+4. Write a MongoDB query to display the fields restaurant_id, name, borough and zip code, but exclude the field _id for all the documents in the collection restaurant. 
+db.Restaurants.find({},{restaurant_id:1,name:1,borough: 1,"address.zipcode":1,_id:0})
+
+5. Write a MongoDB query to display all the restaurant which is in the borough Bronx.
+db.Restaurants.find({borough: "Bronx"})
+
+6. Write a MongoDB query to display the first 5 restaurant which is in the borough Bronx. 
+db.Restaurants.find({borough: "Bronx"}).limit(5)
+
+7. Write a MongoDB query to display the next 5 restaurants after skipping first 5 which are in the borough Bronx.
+db.Restaurants.find({borough: "Bronx"}).skip(5).limit(5)
+
+8. Write a MongoDB query to find the restaurants who achieved a score more than 90. 
+db.Restaurants.find({"grades": {$elemMatch: {score: {$gt: 90}}}})
+
+9. Write a MongoDB query to find the restaurants that achieved a score, more than 80 but less than 100. 
+db.Restaurants.find({"grades": {$elemMatch: {score: {$gt:80 , $lt:100}}}})
+
+10. Write a MongoDB query to find the restaurants which locate in latitude value less than -95.754168.
+db.Restaurants.find({address.coord: {$lt: -95.754168}})
+db.Restaurants.find({"address.coord.0": {$lt: -95.754168}})
+
+11. Write a MongoDB query to find the restaurants that do not prepare any cuisine of 'American' and their grade score more than 70 and latitude less than -65.754168.
+db.Restaurants.find({$and: [{"cuisine":{$ne:"American"}}, {"grades.score": {$gt:70}}, {"address.coord":{$lt: -65.754168}}]})
+
+12. Write a MongoDB query to find the restaurants which do not prepare any cuisine of 'American' and achieved a score more than 70 and located in the longitude less than -65.754168
+db.Restaurants.find({$and: [{"cuisine": {$ne: "American "}}, { "grades.score": {$gt: 70} }, {"address.coord.0": {$lt: -65.754168}}]})
+
+Note : Do this query without using $and operator. 
+db.Restaurants.find({"cuisine": {$ne: "American "} , "grades.score": {$gt: 70} , "address.coord.0": {$lt: -65.754168} })
+
+
+13. Write a MongoDB query to find the restaurants which do not prepare any cuisine of 'American' and achieved a grade point 'A' not belongs to the borough Brooklyn. The document must be displayed according to the cuisine in descending order. 
+db.Restaurants.find({"cuisine": {$ne: "American "}, "borough": {$ne: "Brooklyn"}, "grades.grade": {$eq: "A"}})
+
+db.Restaurants.find({"cuisine": {$ne: "American "}, "borough": {$ne: "Brooklyn"}, "grades.grade": {$eq: "A"}}).sort({"cuisine":-1})
+
+14. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which contain 'Wil' as first three letters for its name.
+db.Restaurants.find({"name": "/^Wil/"}) ----------incorrect
+db.Restaurants.find({name: /^Wil/})   ------------correct
+db.Restaurants.find({name: /^Wil/},{restaurant_id:1, name:1, borough: 1,cuisine:1})
+
+15. Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which contain 'ces' as last three letters for its name. 
+db.Restaurants.find({name: /ces^/},{restaurant_id:1, name:1, borough: 1,cuisine:1})
