@@ -1,0 +1,79 @@
+create table PlacementDrive(Drive_id INT auto_increment PRIMARY KEY, PCompanyName VARCHAR(50) NOT NULL,package INT CHECK (package>0),location VARCHAR(50));
+
+CREATE TABLE Training(Training_id INT auto_increment PRIMARY KEY,TCompany_Name VARCHAR(50) NOT NULL, T_Fee DECIMAL(10,2) CHECK (T_Fee>0), T_Year YEAR NOT NULL);
+
+CREATE TABLE Student(S_id INT AUTO_INCREMENT PRIMARY KEY,Drive_id INT, Training_id INT, S_name VARCHAR(50) NOT NULL, CGPA DECIMAL(3,2) CHECK (CGPA BETWEEN 0 AND 10), S_Branch VARCHAR(20) CHECK (S_Branch IN ('Computer','IT','ENTC','ECE','AIDS')), S_DOB DATE, FOREIGN KEY (Drive_id) REFERENCES PlacementDrive(Drive_id) ON DELETE CASCADE, FOREIGN KEY (Training_id) REFERENCES Training(Training_id));
+
+
+ON DELETE CASCADE was remaining to add in this.
+To add later, delete the FOREIGN KEY.
+
+To view foreign key name 
+SHOW CREATE TABLE Student;
+
+then alter table drop foreign key fk_name;
+
+To add constraint:
+alter table Student ADD CONSTRAINT fk_name FOREIGN KEY (Drive_id) REFERENCES PlacementDrive(Drive_id) ON DELETE CASCADE;
+
+
+INSERT INTO PlacementDrive (PCompanyName,package,location) VALUES ('TCS',40000,'Pune');
+INSERT INTO PlacementDrive (PCompanyName,package,location) VALUES ('Infosys',45000,'Mumbai'), ('Google',80000,'Hyderabad'),('Wipro',35000,'Pune');
+
+
+INSERT INTO Training (TCompany_Name,T_Fee,T_Year) VALUES ('TechSkill',20000,2019), ('TalentServe',25000,2021), ('InternShala',34000,2022), ('ApnaCollege',18000,2019);
+
+INSERT INTO Student (Drive_id,Training_id,S_name,CGPA,S_Branch,S_DOB) VALUES (1,1,"Asma",9.5,'Computer','2000-02-18');
+
+INSERT INTO Student (Drive_id,Training_id,S_name,CGPA,S_Branch,S_DOB) VALUES (2,2,"Rahul",9.7,'IT','2002-02-5');
+
+INSERT INTO Student (Drive_id,Training_id,S_name,CGPA,S_Branch,S_DOB) VALUES (3,3,"Aditi",6.8,'ECE','2001-02-5'), (4,4,"Dev",8.8,'ENTC','2001-05-5'),(1,1,"Sam",9.7,'AIDS','2001-11-10'),(2,2,"Arjun",9.57,'Computer','2003-02-5'),(3,3,"Diksha",8.6,'ECE','2001-02-5'),(4,4,"Kashmira",7.77,'IT','2000-02-5'),(2,1,"Sneha",8.8,'Computer','2003-02-5'),(2,1,"Rahi",9.5,'AIDS','2001-05-5');
+
+
+
+####INDEX
+
+1) CREATE INDEX ind_stud_name ON Student(S_name);
+2) CREATE UNIQUE INDEX ind_drive ON PlacementDrive(PCompanyName);
+
+3) CREATE INDEX ind_branch_cgpa ON Student(S_Branch,CGPA);
+
+
+#### view
+CREATE VIEW Student_drive_view AS SELECT S_name,S_Branch,CGPA,PCompanyName,package FROM Student S JOIN PlacementDrive P ON S.Drive_id=P.Drive_id;
+
+
+SELECT * FROM Student WHERE S_Branch IN ('Computer','IT') AND (S_name LIKE 'a%' OR S_name LIKE 'D%');
+
+SELECT COUNT(DISTINCT PCompanyName) AS company_count FROM PlacementDrive;
+
+update training set T_Fee=T_Fee*1.15 WHERE T_Year=2019;
+
+delete from student where CGPA<7;
+
+select PCompanyName FROm PlacementDrive where location in ('Pune','Mumbai');
+
+select S_name from Student S JOIN Training T ON S.Training_id=T.Training_id WHERE T.T_Year IN (2019,2021);
+
+-- MAX CGPA
+SELECT S_name from Student WHERE CGPA = (SELECT MAX(CGPA) FROM Student);
+
+-- CGPA 7-9
+SELECT S_name,CGPA from Student WHERE CGPA BETWEEN 7 AND 9;
+
+-- Display student & T_id in decreasing fees
+SELECT S_Name, S.T_id, T.T_Fee From Student S JOIN Training T ON S.T_id=T.T_id ORDER BY T.T_Fee DESC;
+SELECT S_Name, S.Training_id, T.T_Fee From Student S JOIN Training T ON S.Training_id=T.Training_id ORDER BY T.T_Fee DESC;
+
+
+-- Display PCompanyName, S_name, location, package (for 30k, 40k, 50k)
+SELECT PCompanyName,S_name, location, package FROM Student S JOIN PlacementDrive P ON S.Drive_id=P.Drive_id WHERE package IN (30000,40000,50000);
+
+-- SEQUENCE
+CREATE SEQUENCE stud_seq START WITH 1 INCREMENT BY 1;
+
+INSERT INTO Student (Stud_id, Stud_Name, Drive_id, T_id)
+VALUES (stud_seq.NEXTVAL, 'Shraddha', 101, 201);
+
+SELECT stud_seq.NEXTVAL FROM dual;
+SELECT stud_seq.CURRVAL FROM dual;
